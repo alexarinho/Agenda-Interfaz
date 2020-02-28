@@ -122,12 +122,12 @@ public class Interfaz extends JFrame {
 		btnBuscar.addMouseListener(new BtnBuscarMouseListener());
 		btnBuscar.setBackground(Color.ORANGE);
 		btnBuscar.setFont(new Font("Segoe UI Black", Font.PLAIN, 11));
-		btnBuscar.setBounds(270, 239, 101, 23);
+		btnBuscar.setBounds(259, 307, 101, 23);
 		contentPane.add(btnBuscar);
 		
 		lblInf = new JLabel("Contacto:");
 		lblInf.setFont(new Font("Segoe UI Black", Font.PLAIN, 11));
-		lblInf.setBounds(227, 147, 241, 14);
+		lblInf.setBounds(205, 147, 241, 14);
 		contentPane.add(lblInf);
 		
 		comboBox = new JComboBox();
@@ -135,10 +135,13 @@ public class Interfaz extends JFrame {
 		modeloComboBox.addElement("Contactos:");
 		comboBox.setModel(modeloComboBox);
 		
-		comboBox.setBounds(270, 307, 101, 23);
+		comboBox.setBounds(259, 181, 101, 23);
 		contentPane.add(comboBox);
 		
-		btnBorrar = new JButton("New button");
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.addMouseListener(new BtnBorrarMouseListener());
+		btnBorrar.setBackground(Color.ORANGE);
+		btnBorrar.setForeground(Color.BLACK);
 		btnBorrar.setFont(new Font("Segoe UI Black", Font.PLAIN, 11));
 		btnBorrar.setBounds(459, 307, 89, 23);
 		contentPane.add(btnBorrar);
@@ -168,14 +171,15 @@ public class Interfaz extends JFrame {
 			textNombre.setText(nombre);
 			textTlf.setText(Integer.toString(telefono));
 			
-			modeloComboBox.removeAllElements();
+			recargarDatos();
+			/*modeloComboBox.removeAllElements();
 			modeloComboBox.addElement("Contacto: ");
 			
 			for (Contacto contacto : vContactos) {
 				if(contacto!=null) {
 					modeloComboBox.addElement(contacto.toString());
 				}
-			}
+			}*/
 			
 			JOptionPane.showMessageDialog(null, "Contacto añadido", "Contacto", 3);
 		}
@@ -187,4 +191,32 @@ public class Interfaz extends JFrame {
 			lblInf.setText(vContactos[i-1].toString());
 		}
 	}
+	
+	private class BtnBorrarMouseListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			String i = (String)comboBox.getSelectedItem();
+			for (int j = 0; j < vContactos.length; j++) {
+				if(vContactos[j]!=null) {
+					if(i.equalsIgnoreCase(vContactos[j].getNombre())) {
+						vContactos[j]=null;
+					}
+				}
+			}
+
+			JOptionPane.showMessageDialog(null, "Contacto Borrado", "Borrar",3);
+			recargarDatos();
+		}
+	}
+	
+	private void recargarDatos() {
+		modeloComboBox.removeAllElements();
+		modeloComboBox.addElement("Contactos");
+		for (Contacto c : vContactos) {
+			if (c!=null) {
+				modeloComboBox.addElement(c.getNombre());
+			}
+		}
+	}
+	
 }
